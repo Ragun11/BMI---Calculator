@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMI Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #calculator {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="calculator">
+    <h2>BMI Calculator</h2>
+    <label for="height">Height:</label>
+    <input type="number" id="height" placeholder="Enter height" step="0.01" required>
+    <select id="unit">
+      <option value="metric">Metric (kg, cm)</option>
+      <option value="imperial">Imperial (lbs, in)</option>
+    </select>
+    <br>
+    <label for="weight">Weight:</label>
+    <input type="number" id="weight" placeholder="Enter weight" step="0.01" required>
+    <br>
+    <button onclick="calculateBMI()">Calculate BMI</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function calculateBMI() {
+      const height = parseFloat(document.getElementById('height').value);
+      const weight = parseFloat(document.getElementById('weight').value);
+      const unit = document.getElementById('unit').value;
+
+      let bmi;
+
+      if (unit === 'metric') {
+        bmi = weight / Math.pow(height / 100, 2);
+      } else if (unit === 'imperial') {
+        bmi = (weight / Math.pow(height, 2)) * 703;
+      }
+
+      const resultElement = document.getElementById('result');
+
+      if (!isNaN(bmi)) {
+        const classification = getBMIClassification(bmi);
+        resultElement.innerHTML = `Your BMI: ${bmi.toFixed(2)} - ${classification}`;
+      } else {
+        resultElement.innerHTML = 'Please enter valid height and weight.';
+      }
+    }
+
+    function getBMIClassification(bmi) {
+      if (bmi < 18.5) {
+        return 'Underweight';
+      } else if (bmi < 24.9) {
+        return 'Normal weight';
+      } else if (bmi < 29.9) {
+        return 'Overweight';
+      } else {
+        return 'Obese';
+      }
+    }
+  </script>
+</body>
+</html>
